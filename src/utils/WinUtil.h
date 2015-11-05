@@ -16,8 +16,11 @@
 
 #define DRAGQUERY_NUMFILES 0xFFFFFFFF
 
-inline int RectDx(const RECT &r) { return r.right - r.left; }
-inline int RectDy(const RECT &r) { return r.bottom - r.top; }
+int RectX(const RECT& r);
+int RectY(const RECT& r);
+int RectDx(const RECT &r);
+int RectDy(const RECT &r);
+void RectMove(RECT& r, int offX, int offY);
 
 #define Edit_SelectAll(hwnd) Edit_SetSel(hwnd, 0, -1)
 #define ListBox_AppendString_NoSort(hwnd, txt) ListBox_InsertString(hwnd, -1, txt)
@@ -25,12 +28,12 @@ inline int RectDy(const RECT &r) { return r.bottom - r.top; }
 BOOL SafeCloseHandle(HANDLE *h);
 BOOL SafeDestroyWindow(HWND *hwnd);
 void FillWndClassEx(WNDCLASSEX &wcex, const WCHAR *clsName, WNDPROC wndproc);
-inline void MoveWindow(HWND hwnd, RectI rect) {
-    MoveWindow(hwnd, rect.x, rect.y, rect.dx, rect.dy, TRUE);
-}
-inline void MoveWindow(HWND hwnd, RECT *r) {
-    MoveWindow(hwnd, r->left, r->top, RectDx(*r), RectDy(*r), TRUE);
-}
+
+void MoveWindow(HWND hwnd, RectI r);
+void MoveWindow(HWND hwnd, RECT *r);
+void MoveWindowBy(HWND hwnd, int offX, int offY);
+void ResizeHwndToClientArea(HWND hwnd, int dx, int dy, bool hasMenu);
+void ResizeWindow(HWND, int dx, int dy);
 
 bool IsOs64();
 bool IsProcess64();
@@ -97,8 +100,6 @@ bool ReadDataFromStream(IStream *stream, void *buffer, size_t len, size_t offset
 UINT GuessTextCodepage(const char *data, size_t len, UINT defVal = CP_ACP);
 WCHAR *NormalizeString(const WCHAR *str, int /* NORM_FORM */ form);
 bool IsRtl(HWND hwnd);
-void ResizeHwndToClientArea(HWND hwnd, int dx, int dy, bool hasMenu);
-void ResizeWindow(HWND, int dx, int dy);
 
 // schedule WM_PAINT at window's leasure
 inline void ScheduleRepaint(HWND hwnd) { InvalidateRect(hwnd, nullptr, FALSE); }

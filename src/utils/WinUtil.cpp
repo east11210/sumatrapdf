@@ -12,6 +12,18 @@
 
 static HFONT gDefaultGuiFont = nullptr;
 
+int RectX(const RECT& r) { return r.left; }
+int RectY(const RECT& r) { return r.top; }
+int RectDx(const RECT &r) { return r.right - r.left; }
+int RectDy(const RECT &r) { return r.bottom - r.top; }
+
+void RectMove(RECT& r, int offX, int offY) {
+  r.left += offX;
+  r.right += offX;
+  r.top += offY;
+  r.bottom += offY;
+}
+
 void InitAllCommonControls() {
     INITCOMMONCONTROLSEX cex = { 0 };
     cex.dwSize = sizeof(INITCOMMONCONTROLSEX);
@@ -1261,6 +1273,21 @@ void ResizeWindow(HWND hwnd, int dx, int dy) {
         dy = RectDy(rc);
     }
     SetWindowPos(hwnd, nullptr, 0, 0, dx, dy, SWP_NOMOVE | SWP_NOZORDER);
+}
+
+void MoveWindow(HWND hwnd, RectI r) {
+    MoveWindow(hwnd, r.x, r.y, r.dx, r.dy, TRUE);
+}
+
+void MoveWindow(HWND hwnd, RECT *r) {
+    MoveWindow(hwnd, r->left, r->top, RectDx(*r), RectDy(*r), TRUE);
+}
+
+void MoveWindowBy(HWND hwnd, int offX, int offY) {
+  RECT r;
+  GetWindowRect(hwnd, &r);
+  RectMove(r, offX, offY);
+  SetWindowPos(hwnd, nullptr, RectX(r), RectY(r), RectDx(r), RectDy(r), SWP_NOSIZE | SWP_NOZORDER);
 }
 
 void VariantInitBstr(VARIANT &urlVar, const WCHAR *s) {
