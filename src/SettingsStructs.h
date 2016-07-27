@@ -56,6 +56,8 @@ struct FixedPageUI {
     Vec<COLORREF> * gradientColors;
     // if true, TextColor and BackgroundColor will be temporarily swapped
     bool invertColors;
+	 // Line spacing value;
+	 int lineSpacing;
 };
 
 // customization options for eBooks (EPUB, Mobi, FictionBook) UI. If
@@ -421,9 +423,10 @@ static const FieldInfo gFixedPageUIFields[] = {
     { offsetof(FixedPageUI, selectionColor),  Type_Color,      0x0cfcf5                     },
     { offsetof(FixedPageUI, windowMargin),    Type_Compact,    (intptr_t)&gWindowMarginInfo },
     { offsetof(FixedPageUI, pageSpacing),     Type_Compact,    (intptr_t)&gSizeIInfo        },
-    { offsetof(FixedPageUI, gradientColors),  Type_ColorArray, 0                            },
+	 { offsetof(FixedPageUI, gradientColors),  Type_ColorArray, 0 },
+	 { offsetof(FixedPageUI, lineSpacing),     Type_Int,        6                            },
 };
-static const StructInfo gFixedPageUIInfo = { sizeof(FixedPageUI), 6, gFixedPageUIFields, "TextColor\0BackgroundColor\0SelectionColor\0WindowMargin\0PageSpacing\0GradientColors" };
+static const StructInfo gFixedPageUIInfo = { sizeof(FixedPageUI), 7, gFixedPageUIFields, "TextColor\0BackgroundColor\0SelectionColor\0WindowMargin\0PageSpacing\0GradientColors\0LineSpacing" };
 
 static const FieldInfo gEbookUIFields[] = {
     { offsetof(EbookUI, fontName),        Type_String, (intptr_t)L"Georgia" },

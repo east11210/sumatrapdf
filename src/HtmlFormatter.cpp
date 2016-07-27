@@ -15,6 +15,9 @@
 #define NOLOG 1
 #include "DebugLog.h"
 
+#include "SettingsStructs.h"
+#include "GlobalPrefs.h"
+
 /*
 Given size of a page, we format html into a set of pages. We handle only a small
 subset of html commonly present in ebooks.
@@ -205,7 +208,7 @@ HtmlFormatter::HtmlFormatter(HtmlFormatterArgs *args) :
 
     textMeasure->SetFont(CurrFont());
 
-    lineSpacing = textMeasure->GetCurrFontLineSpacing();
+    lineSpacing = textMeasure->GetCurrFontLineSpacing() + gGlobalPrefs->fixedPageUI.lineSpacing;
     spaceDx = CurrFont()->GetSize() / 2.5f; // note: a heuristic
     float spaceDx2 = GetSpaceDx(textMeasure);
     if (spaceDx2 < spaceDx)
